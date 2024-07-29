@@ -1,36 +1,28 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
 import "../../styles/home.css";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-
-
-export const Home = () => {
-	const { store, actions } = useContext(Context);
+export const Login = () => {
+    const { store, actions } = useContext(Context);
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("")
 	const navigate = useNavigate();
-	const handleSubmitRegister = async(e) => {
+
+	const handleSubmitLogin = async(e) => {
 		e.preventDefault();
-		const response = await actions.register(email, password);
-		console.log(response)
-		console.log(email)
-		navigate("/login");
-		
-
-	}
-
-	return (
-		<div className="d-flex justify-content-center align-items-center vh-100">
-		<div className="d-flex flex-column justify-content-center align-items-center m-5">
-		<h1 >Amazingly Secure!</h1>
-		<h3 className="mt-2">Authentification System</h3>
-		</div>
+		const isLoggedIn = await actions.login(email, password);
+		if(isLoggedIn){
+			navigate("/private")
+		}
+      
+    }
+    return (
+        <div className="d-flex justify-content-center align-items-center vh-100">
 		<div className="card" style={{ width: '25rem' }}>
 		  <div className="card-body">
-			<h5 className="card-title text-center">Sign Up!</h5>
-			<form onSubmit={handleSubmitRegister}>
+			<h5 className="card-title text-center">Sign In!</h5>
+			<form onSubmit={handleSubmitLogin}>
 			  <div className="mb-3">
 				<label htmlFor="email" className="form-label">Email address</label>
 				<input type="email" className="form-control" id="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -41,13 +33,12 @@ export const Home = () => {
 			  </div>
 			  <button type="submit" className="btn btn-primary w-100">Submit</button>
 			  <hr className="my-3" />
-			  <Link to={"/login"}>
-			  already have an account?
-			  <span className="text-primary "></span> 
-			  </Link>
+			
 			</form>
 		  </div>
 		</div>
 	  </div>
-	);
+    );
 };
+
+
